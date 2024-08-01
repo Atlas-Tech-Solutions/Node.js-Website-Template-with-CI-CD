@@ -15,5 +15,15 @@
   "bugs": {
     "url": "https://github.com/Atlas-Tech-Solutions/Nodejs-Web-Deploy-starter/issues"
   },
-  "homepage": "https://github.com/Atlas-Tech-Solutions/Nodejs-Web-Deploy-starter#readme"
+  "homepage": "https://github.com/Atlas-Tech-Solutions/Nodejs-Web-Deploy-starter#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "connect-redis": "^7.1.1",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "path": "^0.12.7",
+    "redis": "^4.7.0"
+  }
 }
