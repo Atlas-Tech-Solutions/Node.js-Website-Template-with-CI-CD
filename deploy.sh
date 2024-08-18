@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Load environment variables from .env file
-if [ -f .env ]; then
-  export $(cat .env | xargs)
-fi
-
 # Function to deploy a specific branch
 deploy() {
   local branch=$1
@@ -23,6 +18,15 @@ deploy() {
       echo "Local changes reset successfully." | tee -a $logfile
   else
       echo "Failed to reset local changes. Aborting deployment." | tee -a $logfile
+      exit 1
+  fi
+
+  # Attempt to make deploy.sh executable
+  echo "Making deploy script deployable" | tee -a $logfile
+  if sudo /bin/chmod +x $directory/deploy.sh; then
+      echo "Successfully made deploy script executable" | tee -a $logfile
+  else
+      echo "Failed to make deploy script executable" | tee -a $logfile
       exit 1
   fi
 
@@ -46,15 +50,6 @@ deploy() {
   fi
 
   echo "Deployment completed successfully." | tee -a $logfile
-
-  # Attempt to make deploy.sh executable
-  echo "Making deploy script deployable" | tee -a $logfile
-  if sudo /bin/chmod +x $directory/deploy.sh; then
-      echo "Successfully made deploy script executable" | tee -a $logfile
-  else
-      echo "Failed to make deploy script executable" | tee -a $logfile
-      exit 1
-  fi
 }
 
 # Determine the branch from the argument or from the current git branch
@@ -66,9 +61,9 @@ fi
 
 # Set the directory and service name based on the branch
 if [ "$branch" == "master" ]; then
-  deploy "master" "$PROD_DIRECTORY" "$PROD_SERVICE_NAME"
+  deploy "master" "/opt/atlas-tech-solutions-LIVE" "atlastechsolutions-live.service"
 elif [ "$branch" == "dev" ]; then
-  deploy "dev" "$DEV_DIRECTORY" "$DEV_SERVICE_NAME"
+  deploy "dev" "/opt/atlas-tech-solutions-DEV" "atlastechsolutions-dev.service"
 else
   echo "Branch $branch is not configured for deployment. Aborting."
   exit 1
