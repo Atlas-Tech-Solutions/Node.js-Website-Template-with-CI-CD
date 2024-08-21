@@ -32,9 +32,16 @@ deploy() {
 
   # Install/update dependencies
   if npm install; then
-      echo "Dependencies installed/updated successfully." | tee -a $logfile
+      echo "Dependencies installed successfully." | tee -a $logfile
   else
       echo "Failed to install/update dependencies. Aborting deployment." | tee -a $logfile
+      exit 1
+  fi
+
+  if npm update; then
+      echo "Dependencies updated successfully." | tee -a $logfile
+  else
+      echo "Failed to update dependencies. Aborting deployment." | tee -a $logfile
       exit 1
   fi
 
